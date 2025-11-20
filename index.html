@@ -234,20 +234,23 @@
     currentVideoIndex = 0;
     const iframes = document.querySelectorAll('iframe');
     
-    // Reset all iframes and add autoplay to first
+    // Set up all iframes with API enabled and autoplay on first
     iframes.forEach((iframe, index) => {
       const baseUrl = videoUrls[index];
       if (index === 0) {
+        // First video: autoplay immediately
         iframe.src = baseUrl + "?autoplay=1&enablejsapi=1";
       } else {
+        // Other videos: prepare with API but don't autoplay yet
         iframe.src = baseUrl + "?enablejsapi=1";
       }
     });
 
     // Scroll to first video
-    document.querySelector('.card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    iframes[0].closest('.card').scrollIntoView({ behavior: 'smooth', block: 'center' });
     
-    // Set up message listener for video end
+    // Set up message listener for video end (remove old listener first)
+    window.removeEventListener('message', handleVideoEnd);
     window.addEventListener('message', handleVideoEnd);
   };
 
