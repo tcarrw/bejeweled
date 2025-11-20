@@ -32,6 +32,42 @@
     font-weight:600;
   }
   .wrap{max-width:760px;margin:0 auto;padding:32px 16px;}
+  
+  /* Taylor Nation notice */
+  .taylor-notice{
+    background:rgba(196,181,253,0.15);
+    border:1px solid var(--accent);
+    border-radius:16px;
+    padding:20px;
+    margin:24px 0;
+    text-align:center;
+  }
+  .taylor-notice h3{
+    color:var(--accent);
+    margin:0 0 12px;
+    font-size:18px;
+  }
+  .playback-controls{
+    margin-top:16px;
+    display:flex;
+    gap:12px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+  .playback-controls button{
+    padding:10px 20px;
+    background:var(--accent);
+    color:#1a0f3e;
+    border:0;
+    border-radius:12px;
+    font-weight:600;
+    cursor:pointer;
+    font-size:14px;
+  }
+  .playback-controls button:hover{
+    background:#d5c7ff;
+  }
+  
   .card{
     background:var(--card);
     padding:20px;
@@ -97,6 +133,16 @@
   </nav>
 </header>
 <div class="wrap">
+  <div class="taylor-notice">
+    <h3>💜 For Taylor Nation</h3>
+    <p>This collection is created with appreciation for Taylor Swift's work and is intended for Taylor Nation fans. All content is for educational and research purposes within the Illumina Time Framework.</p>
+    <div class="playback-controls">
+      <button id="playAllBtn">▶ Play All (Queue)</button>
+      <button id="resetBtn">↻ Reset</button>
+    </div>
+    <p style="font-size:13px;margin-top:12px;color:var(--muted);">Click "Play All" to watch sequentially, or select individual videos below.</p>
+  </div>
+  
   <div class="card">
     <h2>Bejeweled — Shine</h2>
     <p>Self-illumination. Reclaiming clarity. Polishing back the original signal.</p>
@@ -122,6 +168,21 @@
     <p>Prismatic identity. Refraction. The metamaterial lens of clarity.</p>
     <iframe src="https://www.youtube-nocookie.com/embed/4FUIEcnvT04" allowfullscreen></iframe>
   </div>
+  <div class="card">
+    <h2>my tears ricochet — Echo</h2>
+    <p>Memory resonance. The emotional architecture of return. What echoes when connection breaks.</p>
+    <iframe src="https://www.youtube-nocookie.com/embed/Idjs-hw7Spg" allowfullscreen></iframe>
+  </div>
+  
+  <div class="taylor-notice" style="background:rgba(196,181,253,0.10);margin-top:40px;">
+    <h3>💫 Thank You</h3>
+    <p style="margin-bottom:12px;">Special thanks to the Swifties who helped guide a new fan through Taylor's universe:</p>
+    <p style="font-size:14px;line-height:1.8;">
+      <strong>Shira</strong> — <a href="https://www.tiktok.com/@shira.taylorsversion" target="_blank" style="color:var(--accent);text-decoration:none;">@shira.taylorsversion</a><br>
+      <strong>Kendyl</strong> — <a href="https://www.tiktok.com/@kendyljustine" target="_blank" style="color:var(--accent);text-decoration:none;">@kendyljustine</a>
+    </p>
+    <p style="font-size:13px;margin-top:12px;color:var(--muted);">Your patience and knowledge made this journey possible. 🤍</p>
+  </div>
 </div>
 
 <!-- CONSENT MODAL -->
@@ -132,7 +193,10 @@
     <p>• videos may auto-play audio<br>
        • content is for educational/research purposes<br>
        • your consent is stored locally</p>
-    <p style="margin-top:20px;font-size:12px;line-height:1.5;color:#ccc;">
+    <p style="margin-top:16px;font-size:13px;line-height:1.5;color:#b8e6b8;">
+      <strong>Privacy:</strong> This site has no trackers, no external libraries, and no logs. All consent is stored locally in your browser only.
+    </p>
+    <p style="margin-top:16px;font-size:12px;line-height:1.5;color:#ccc;">
       This note records continuity only. I am reviewing the Taylor Store consent agreement for understanding, not participation.
       No purchase intent is implied. No affiliation is claimed. This disclosure exists to maintain clean structure within School:
       clear intent, clear context, clean boundaries.
@@ -142,6 +206,19 @@
 </div>
 
 <script>
+  // Video URLs for queue
+  const videoUrls = [
+    "https://www.youtube-nocookie.com/embed/b7QlX3yR2xs",
+    "https://www.youtube-nocookie.com/embed/b1kbLwvqugk",
+    "https://www.youtube-nocookie.com/embed/lVkKLf4DCn8",
+    "https://www.youtube-nocookie.com/embed/Tmz1lz0zcLQ",
+    "https://www.youtube-nocookie.com/embed/4FUIEcnvT04",
+    "https://www.youtube-nocookie.com/embed/Idjs-hw7Spg"
+  ];
+  
+  let currentVideoIndex = 0;
+  let playAllMode = false;
+
   // Consent modal
   window.addEventListener("load", () => {
     if (!localStorage.getItem("bejeweledConsent")) {
@@ -153,6 +230,69 @@
     localStorage.setItem("bejeweledConsent", "yes");
     document.getElementById("consentModal").style.display = "none";
   };
+
+  // Play All functionality
+  document.getElementById("playAllBtn").onclick = () => {
+    playAllMode = true;
+    currentVideoIndex = 0;
+    const iframes = document.querySelectorAll('iframe');
+    
+    // Reset all iframes and add autoplay to first
+    iframes.forEach((iframe, index) => {
+      const baseUrl = videoUrls[index];
+      if (index === 0) {
+        iframe.src = baseUrl + "?autoplay=1&enablejsapi=1";
+      } else {
+        iframe.src = baseUrl + "?enablejsapi=1";
+      }
+    });
+
+    // Scroll to first video
+    document.querySelector('.card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    
+    // Set up message listener for video end
+    window.addEventListener('message', handleVideoEnd);
+  };
+
+  // Reset functionality
+  document.getElementById("resetBtn").onclick = () => {
+    playAllMode = false;
+    currentVideoIndex = 0;
+    const iframes = document.querySelectorAll('iframe');
+    iframes.forEach((iframe, index) => {
+      iframe.src = videoUrls[index];
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Handle video end and play next
+  function handleVideoEnd(event) {
+    if (!playAllMode) return;
+    
+    if (event.data && typeof event.data === 'string') {
+      try {
+        const data = JSON.parse(event.data);
+        // event 0 = video ended
+        if (data.event === 'onStateChange' && data.info === 0) {
+          currentVideoIndex++;
+          if (currentVideoIndex < videoUrls.length) {
+            const iframes = document.querySelectorAll('iframe');
+            const nextIframe = iframes[currentVideoIndex];
+            nextIframe.src = videoUrls[currentVideoIndex] + "?autoplay=1&enablejsapi=1";
+            
+            // Scroll to next video
+            nextIframe.closest('.card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          } else {
+            // Queue finished
+            playAllMode = false;
+            currentVideoIndex = 0;
+          }
+        }
+      } catch (e) {
+        // Ignore parsing errors
+      }
+    }
+  }
   
   // Highlight active nav link based on hostname
   const links = document.querySelectorAll('nav a');
