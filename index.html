@@ -219,15 +219,12 @@
   let currentVideoIndex = 0;
   let playAllMode = false;
 
-  // Consent modal
+  // Consent modal - always show on load
   window.addEventListener("load", () => {
-    if (!localStorage.getItem("bejeweledConsent")) {
-      document.getElementById("consentModal").style.display = "flex";
-    }
+    document.getElementById("consentModal").style.display = "flex";
   });
   
   document.getElementById("consentButton").onclick = () => {
-    localStorage.setItem("bejeweledConsent", "yes");
     document.getElementById("consentModal").style.display = "none";
   };
 
