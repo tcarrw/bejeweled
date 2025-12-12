@@ -1,0 +1,65 @@
+# Robots.txt for bejeweled.plnt.earth - Taylor Swift Video Collection
+# Allow all crawlers - we want this educational content discoverable
+
+# OpenAI (ChatGPT, GPT search)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic (Claude)
+User-agent: Claude-Web
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+# Google (Search + Gemini)
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Common Crawl (used for AI training)
+User-agent: CCBot
+Allow: /
+
+# Bing (Search + Copilot)
+User-agent: Bingbot
+Allow: /
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+
+# Other search engines
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+# Academic/research crawlers
+User-agent: ia_archiver
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# Default rule - allow everything
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://bejeweled.plnt.earth/sitemap.xml
